@@ -54,12 +54,19 @@ class BST {
             else
                 return false;
         }
-        ptr->getData() = item;  // Manybe grammer error
-        return true;
+        BSTNode<data>* newNode = new BSTNode();
+        newnode->data = item;
+        newNode->left = 0;
+        newNode->right = NULL;
+        newNode->parent = ptr
+
+            // ptr->getData() = item;  // Manybe grammer error
+            return true;
     }
 
     /** TODO */
-    BSTIterator<Data> iterator find(const Data& item) const {
+    // BSTIterator<Data>
+    iterator find(const Data& item) const {
         // iterator iobj = new iterator(this->root);
         // // cout << *(ptr.curr) << endl;
         // int val = *(iobj.curr);  // cannot access the curr pointer, as curr
