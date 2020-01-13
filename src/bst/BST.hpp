@@ -19,10 +19,10 @@ class BST {
     // pointer to the root of this BST, or 0 if the BST is empty
     BSTNode<Data>* root;
 
-    // number of Data items stored in this BST.
+    // // number of Data items stored in this BST.
     unsigned int isize;
 
-    // height of this BST.
+    // // height of this BST.
     int iheight;
 
   public:
@@ -36,31 +36,76 @@ class BST {
     BST() : root(0), isize(0), iheight(-1) {}
 
     /** TODO */
-    BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {}
+    BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {
+        // PART 2
+    }
 
     /** TODO */
     ~BST() {}
 
     /** TODO */
-    bool insert(const Data& item) { return false; }
+    bool insert(const Data& item) {
+        BSTNode<Data>* ptr = this->root;
+        while (ptr != NULL) {
+            if (*ptr < item)
+                ptr = ptr->left;
+            else if (item < *ptr)
+                ptr = ptr->right;
+            else
+                return false;
+        }
+        ptr->getData() = item;  // Manybe grammer error
+        return true;
+    }
 
     /** TODO */
-    iterator find(const Data& item) const { return 0; }
+    BSTIterator<Data> iterator find(const Data& item) const {
+        // iterator iobj = new iterator(this->root);
+        // // cout << *(ptr.curr) << endl;
+        // int val = *(iobj.curr);  // cannot access the curr pointer, as curr
+        // is a
+        //                          // private member
+        // while (iobj.curr != NULL) {
+        //     if (item < val)
+        //         iobj.curr = iobj.curr->left;
+        //     else if (val < item)
+        //         iobj.curr = iobj.curr->right;
+        //     else
+        //         return iobj;
+        // }
+        // iobj.curr = nullptr;
+        // return iobj;
+        return 0;
+    }
 
-    /** TODO */
+    /** TODO */  // PART 2
     bool deleteNode(const Data& item) { return false; }
 
     /** TODO */
-    unsigned int size() const { return 0; }
+    unsigned int size() const { return this->isize; }
 
     /** TODO */
-    int height() const { return 0; }
+    int height() const {
+        if (this->empty()) return -1;
+        //
+        return this->iheight;
+    }
 
     /** TODO */
-    bool empty() const { return false; }
+    bool empty() const {
+        if (this->root == NULL)
+            return true;
+        else
+            return false;
+    }
 
     /** TODO */
-    iterator begin() const { return 0; }
+    iterator begin() const {
+        // iterator start = new iterator(
+        //     first(this->root));  // Not sure, maybe the grammer error
+        // return start;
+        return 0;
+    }
 
     /** Return an iterator pointing past the last item in the BST. */
     iterator end() const { return typename BST<Data>::iterator(0); }
@@ -83,15 +128,23 @@ class BST {
         // known as a breadth first traversal of the tree.
         // It's useful here to show which nodes are on which
         // level.
-        queue<BSTNode<Data>*> toVisit;
-        toVisit.push(root);
+        queue<BSTNode<Data>*>
+            toVisit;         // Create an empty queue for level order travrsal
+        toVisit.push(root);  // Enqueue root and initialize height
         int nodesPerLevel = 1;
         int totalSpacing = 1 << iheight;
 
         for (int i = 0; i <= iheight; i++) {
             for (int j = 0; j < nodesPerLevel; j++) {
-                BSTNode<Data>* curr = toVisit.front();
-                toVisit.pop();
+                BSTNode<Data>* curr =
+                    toVisit.front();  // returns a reference to the next element
+                                      // in the queue; The next element is the
+                                      // oldest element in the queue
+                                      // and the same element that is poped out
+                                      // from the queue
+                                      // when pop is called.
+                toVisit.pop();        // removes the next element in the queue,
+                                      // reducing its size by 1
                 if (curr == nullptr) {
                     *out << "X";
                     // If we have an entire missing subtree, we
@@ -115,7 +168,13 @@ class BST {
 
   private:
     /** TODO Helper function for begin() */
-    static BSTNode<Data>* first(BSTNode<Data>* root) { return 0; }
+    // returns a pointer to the node with the samllest data(the left-most node)
+    static BSTNode<Data>* first(BSTNode<Data>* root) {
+        while (root->left != NULL) {
+            root = root->left;
+        }
+        return root;
+    }
 
     /** TODO */
     static void deleteAll(BSTNode<Data>* n) {
