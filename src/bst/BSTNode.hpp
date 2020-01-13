@@ -21,7 +21,11 @@ class BSTNode {
     BSTNode<Data>* parent;
 
     /** TODO */
-    BSTNode(const Data& d) : data(d) {}
+    BSTNode(const Data& d) : data(d) {
+        this->left = nullptr;
+        this->right = nullptr;
+        this->parent = nullptr;
+    }
 
     /** Set the value of data */
     void setData(const Data& d) { data = d; }
