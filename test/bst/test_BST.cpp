@@ -59,37 +59,51 @@ using namespace testing;
 // }
 
 // TODO: add more BST tests here
-// TEST(BSTTests, EMPTY_BST) {
-//     BST<int>* bst;
-//     ASSERT_TRUE((bst->isize) == 0);
-// }
-// template <typename T>
+TEST(BSTTests, EMPTY_HEIGHT) {
+    BST<int> bst;
+    ASSERT_EQ(bst.height(), -1);
+}
+TEST(BSTTests, EMPTY_SIZE) {
+    BST<int> bst;
+    ASSERT_EQ(bst.size(), 0);
+}
+TEST(BSTTests, EMPTY_ROOT) {
+    BST<int> bst;
+    ASSERT_EQ(bst.empty(), true);
+}
 class TestBSTFixture : public ::testing::Test {
-  public:
+  protected:
     BST<int> bstr;
-    TestBSTFixture() {}
+
+  public:
+    TestBSTFixture() {
+        bstr.insert(7);
+        bstr.insert(12);
+        bstr.insert(5);
+        bstr.insert(18);
+        bstr.insert(6);
+    }
     ~TestBSTFixture() {}
 };
-// TEST_F(TestBSTFixture, EMPTY_ROOT) {
-//     ASSERT_EQ(bstr.empty(), true) << "It's failed.";
-// }
-// TEST(TestBSTFixture, EMPTY_Size) {
-//     BST<int> bstr;
-//     ASSERT_EQ(bstr.size(), 0) << "It's failed.";
-// }
-// TEST(TestBSTFixture, EMPTY_Height) {
-//     BST<int> bstr;
-//     ASSERT_EQ(bstr.height(), -1) << "It's failed.";
-// }
-TEST_F(TestBSTFixture, CHECK_INSERT) {
-    ASSERT_EQ(bstr.insert(7), true) << "It's failed.";
+TEST_F(TestBSTFixture, NON_EMPTY_ROOT) {
+    ASSERT_NE(bstr.empty(), true) << "It's failed.";
 }
-// TEST_F(TestBSTFixture, CHECK_FIND) {
-//     bstr.insert(4);
-//     ASSERT_EQ(*(bstr.find(4)), 4) << "It's failed.";
-// }
-// TEST_F(TestBSTFixture, EMPTY_ISIZE) { ASSERT_EQ(bstr->isize, 0); }
-// TEST_F(TestBSTFixture, EMPTY_IHEIGHT) { ASSERT_EQ(bstr->iheight, 0); }
+TEST_F(TestBSTFixture, NON_EMPTY_Size) {
+    ASSERT_NE(bstr.size(), 0) << "It's failed.";
+}
+TEST_F(TestBSTFixture, NON_EMPTY_Height) {
+    ASSERT_NE(bstr.height(), -1) << "It's failed.";
+}
+TEST_F(TestBSTFixture, SMALL_SIZE_TEST) { ASSERT_EQ(bstr.size(), 5); }
+TEST_F(TestBSTFixture, CHECK_INSERT) {
+    EXPECT_TRUE(bstr.insert(2));
+    EXPECT_FALSE(bstr.insert(12));
+}
+TEST_F(TestBSTFixture, CHECK_FIND) {
+    bstr.insert(4);
+    ASSERT_EQ(*(bstr.find(4)), 4) << "It's failed.";
+    // EXPECT_EQ(*(bstr.find(12)), 12);
+}
 
 // int main(int argc, char** argv) {
 //     ::testing::InitGoogleTest(&argc, argv);
