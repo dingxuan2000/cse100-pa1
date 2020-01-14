@@ -46,26 +46,26 @@ class BST {
     /** TODO */
     bool insert(const Data& item) {
         BSTNode<Data>* newNode = new BSTNode<Data>(item);
-        int height = 0;
         if (this->root == 0) {  // 0 is same as NULL
             this->root = newNode;
             isize = isize + 1;
+            iheight = iheight + 1;
             return true;
         }
+        int height = 0;
         BSTNode<Data>* currentptr = this->root;  // start at root
-        // BSTNode<Data>* parent = NULL; //可能不需要这个了
         while (currentptr != NULL) {
-            // parent = currentptr;
             if (currentptr->getData() < item) {
                 if (currentptr->right == NULL) {
                     currentptr->right = newNode;
                     newNode->parent =
                         currentptr;  // set the newNode's parent=currentptr
-                    newNode->left = NULL;
-                    newNode->right = NULL;
                     isize = isize + 1;
                     height = height +
                              1;  // when insert a newNode, the height must +1
+                    if (height > this->iheight) {
+                        this->iheight = height;
+                    }
                     return true;
                 } else {
                     currentptr = currentptr->right;
@@ -76,39 +76,20 @@ class BST {
                     currentptr->left = newNode;
                     newNode->parent =
                         currentptr;  // set the newNode's parent=currentptr
-                    newNode->left = NULL;
-                    newNode->right = NULL;
                     isize = isize + 1;
                     height = height + 1;
+                    if (height > this->iheight) {
+                        this->iheight = height;
+                    }
                     return true;
                 } else {
                     currentptr = currentptr->left;
-                    iheight = iheight + 1;  // to get the left-most node's
-                                            // height
+                    height = height + 1;  // to get the left-most node's height
                 }
             } else
                 return false;  // when the data of currentptr == item, appear
                                // duplicate case
         }
-        if (height > this->iheight) {
-            this->iheight = height;
-        }
-        // newNode->parent = parent;
-        // if (newNode->data < parent->data) {
-        //     parent->left = newNode;
-        //     (this->isize)++;
-        //     if (height > this->iheight) {
-        //         this->iheight = height;
-        //     }
-        //     return true;
-        // } else {
-        //     parent->right = newNode;
-        //     (this->isize)++;
-        //     if (height > this->iheight) {
-        //         this->iheight = height;
-        //     }
-        //     return true;
-        // }
     }
 
     /** TODO */
@@ -143,7 +124,7 @@ class BST {
     /** TODO */
     int height() const {
         if (this->empty()) return -1;  // when it's an empty tree, return -1
-        if (this->isize == 1) return 0;
+        // if (this->isize == 1) return 0;
         return this->iheight;
     }
 
