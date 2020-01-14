@@ -34,7 +34,27 @@ class BSTNode {
     Data getData() { return data; }
 
     /** TODO */
-    BSTNode<Data>* successor() { return 0; }
+    BSTNode<Data>* successor() {
+        // First case: the current node has the right child, and then traverse
+        // the right-subtree to get the smallest element in that sub-tree.
+        BSTNode<Data>* smallest;
+        if (this->right != NULL) {
+            smallest = this->right;
+            while (smallest->left != NULL) {
+                smallest = smallest->left;
+            }
+            return smallest;
+        } else {
+            smallest = this;
+            while (smallest->parent != NULL) {
+                if (smallest == smallest->parent->left)
+                    return smallest->parent;
+                else
+                    smallest = smallest->parent;
+            }
+            return NULL;
+        }
+    }
 };
 
 /**
