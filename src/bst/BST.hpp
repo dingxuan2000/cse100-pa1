@@ -124,7 +124,6 @@ class BST {
     /** TODO */
     int height() const {
         if (this->empty()) return -1;  // when it's an empty tree, return -1
-        // if (this->isize == 1) return 0;
         return this->iheight;
     }
 
@@ -148,7 +147,11 @@ class BST {
     iterator end() const { return typename BST<Data>::iterator(0); }
 
     /** TODO */
-    vector<Data> inorder() const {}
+    vector<Data> inorder() const {
+        vector<Data> vtr;
+        inorderpush(this->root, vtr);
+        return vtr;
+    }
 
     /**
      * DO NOT CHANGE THIS METHOD
@@ -230,22 +233,15 @@ class BST {
     }
 
     // Add more helper functions below
-    // BSTNode<Data>* add(BSTNode<Data>* node, const Data& item) {
-    //     //first case: BST is empty
-    //     if(node == NULL)
-    //         return newNode(item);
-    //     if(item < node->data)
-    //         node->left = add(node->left,item);
-    //     else if(node->data<item)
-    //         node->right=add(node->right,item);
-    //     return node;
-    // }
-    // BSTNode<Data>* newNode(Data& item){
-    //     BSTNode<Data>* new_node = new BSTNode<>;
-    //     new_node->data = item;
-    //     new_node->left = new_node->right = NULL;
-    //     return new_node;
-    // }
+    static void inorderpush(BSTNode<Data>* root1, vector<Data>& storevtr) {
+        if ((root1 != 0) && (root1->left != 0)) {
+            inorderpush(root1->left, storevtr);
+        }
+        storevtr.push_back(root1->getData());
+        if ((root1 != 0) && (root1->right != 0)) {
+            inorderpush(root1->right, storevtr);
+        }
+    }
 };
 
 #endif  // BST_HPP
