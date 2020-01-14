@@ -45,44 +45,93 @@ class BST {
 
     /** TODO */
     bool insert(const Data& item) {
-        BSTNode<Data>* ptr = this->root;
-        while (ptr != NULL) {
-            if (*ptr < item)
-                ptr = ptr->left;
-            else if (item < *ptr)
-                ptr = ptr->right;
-            else
-                return false;
-        }
-        BSTNode<data>* newNode = new BSTNode();
-        newnode->data = item;
-        newNode->left = 0;
-        newNode->right = NULL;
-        newNode->parent = ptr
-
-            // ptr->getData() = item;  // Manybe grammer error
+        BSTNode<Data>* newNode = new BSTNode<Data>(item);
+        int height = 0;
+        if (this->root == 0) {  // 0 is same as NULL
+            this->root = newNode;
+            isize = isize + 1;
             return true;
+        }
+        BSTNode<Data>* currentptr = this->root;  // start at root
+        // BSTNode<Data>* parent = NULL; //可能不需要这个了
+        while (currentptr != NULL) {
+            // parent = currentptr;
+            if (currentptr->getData() < item) {
+                if (currentptr->right == NULL) {
+                    currentptr->right = newNode;
+                    newNode->parent =
+                        currentptr;  // set the newNode's parent=currentptr
+                    newNode->left = NULL;
+                    newNode->right = NULL;
+                    isize = isize + 1;
+                    height = height +
+                             1;  // when insert a newNode, the height must +1
+                    return true;
+                } else {
+                    currentptr = currentptr->right;
+                    height = height + 1;  // to get the right-most node's height
+                }
+            } else if (item < currentptr->getData()) {
+                if (currentptr->left == NULL) {
+                    currentptr->left = newNode;
+                    newNode->parent =
+                        currentptr;  // set the newNode's parent=currentptr
+                    newNode->left = NULL;
+                    newNode->right = NULL;
+                    isize = isize + 1;
+                    height = height + 1;
+                    return true;
+                } else {
+                    currentptr = currentptr->left;
+                    iheight = iheight + 1;  // to get the left-most node's
+                                            // height
+                }
+            } else
+                return false;  // when the data of currentptr == item, appear
+                               // duplicate case
+        }
+        if (height > this->iheight) {
+            this->iheight = height;
+        }
+        // newNode->parent = parent;
+        // if (newNode->data < parent->data) {
+        //     parent->left = newNode;
+        //     (this->isize)++;
+        //     if (height > this->iheight) {
+        //         this->iheight = height;
+        //     }
+        //     return true;
+        // } else {
+        //     parent->right = newNode;
+        //     (this->isize)++;
+        //     if (height > this->iheight) {
+        //         this->iheight = height;
+        //     }
+        //     return true;
+        // }
     }
 
     /** TODO */
     // BSTIterator<Data>
     iterator find(const Data& item) const {
-        // iterator iobj = new iterator(this->root);
-        // // cout << *(ptr.curr) << endl;
-        // int val = *(iobj.curr);  // cannot access the curr pointer, as curr
-        // is a
-        //                          // private member
-        // while (iobj.curr != NULL) {
-        //     if (item < val)
-        //         iobj.curr = iobj.curr->left;
-        //     else if (val < item)
-        //         iobj.curr = iobj.curr->right;
-        //     else
-        //         return iobj;
-        // }
-        // iobj.curr = nullptr;
-        // return iobj;
-        return 0;
+        BSTNode<Data>* ptr;  // create a pointer that points to root
+        ptr = this->root;
+        // when the current node is not empty, compare the data of node with
+        // item
+        while (ptr != NULL) {
+            if (ptr->getData() < item) {
+                ptr = ptr->right;
+            } else if (item < ptr->getData())
+                ptr = ptr->left;
+            else {
+                iterator iobj(ptr);  // Found it, return an iterator object
+                return iobj;
+            }
+        }
+        // Not Found it, return an iterator object contains NULL, now ptr is
+        // NULL.
+        iterator iobj(ptr);
+        return iobj;
     }
 
     /** TODO */  // PART 2
@@ -93,14 +142,14 @@ class BST {
 
     /** TODO */
     int height() const {
-        if (this->empty()) return -1;
-        //
+        if (this->empty()) return -1;  // when it's an empty tree, return -1
+        if (this->isize == 1) return 0;
         return this->iheight;
     }
 
     /** TODO */
     bool empty() const {
-        if (this->root == NULL)
+        if (this->root == 0)  // 0 is same as NULL
             return true;
         else
             return false;
@@ -108,10 +157,10 @@ class BST {
 
     /** TODO */
     iterator begin() const {
-        // iterator start = new iterator(
-        //     first(this->root));  // Not sure, maybe the grammer error
-        // return start;
-        return 0;
+        // call first(), and create an object pointing to the smallest element
+        // in BST
+        iterator start(first(this->root));
+        return start;
     }
 
     /** Return an iterator pointing past the last item in the BST. */
@@ -200,6 +249,22 @@ class BST {
     }
 
     // Add more helper functions below
+    // BSTNode<Data>* add(BSTNode<Data>* node, const Data& item) {
+    //     //first case: BST is empty
+    //     if(node == NULL)
+    //         return newNode(item);
+    //     if(item < node->data)
+    //         node->left = add(node->left,item);
+    //     else if(node->data<item)
+    //         node->right=add(node->right,item);
+    //     return node;
+    // }
+    // BSTNode<Data>* newNode(Data& item){
+    //     BSTNode<Data>* new_node = new BSTNode<>;
+    //     new_node->data = item;
+    //     new_node->left = new_node->right = NULL;
+    //     return new_node;
+    // }
 };
 
 #endif  // BST_HPP
