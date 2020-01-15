@@ -89,7 +89,8 @@ class BST {
                     height = height + 1;  // to get the left-most node's height
                 }
             } else {
-                delete newNode;
+                delete newNode;  // when the newNode is duplicate, must to
+                                 // delete it.
                 return false;
             }  // when the data of currentptr == item, appear
                // duplicate case

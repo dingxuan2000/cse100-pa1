@@ -22,3 +22,17 @@ TEST(BST_ITERATOR_TEST, TEST_ITERATOR_INCREMENT) {
 
     ASSERT_EQ(iter, nullptr);
 }
+TEST(BST_ITERATOR_TEST, TEST_ITERATOR_EQUAL) {
+    BSTNode<int> node1(4);
+    BSTIterator<int> iter1(&node1);
+    BSTNode<int> node2(5);
+    BSTIterator<int> iter2(&node2);
+    ASSERT_FALSE(iter1 == iter2);
+}
+TEST(BST_ITERATOR_TEST, TEST_ITERATOR_NOTEQUAL) {
+    BSTNode<int> node1(3);
+    BSTIterator<int> iter1(&node1);
+    BSTNode<int> node2(4);
+    BSTIterator<int> iter2(&node2);
+    ASSERT_TRUE(iter1 != iter2);
+}
