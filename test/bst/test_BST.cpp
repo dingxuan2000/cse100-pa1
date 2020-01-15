@@ -104,9 +104,6 @@ using namespace testing;
 //     // EXPECT_EQ(*(bstr.find(12)), 12);
 // }
 
-// TEST_F(TestBSTFixture, CHECK_DELETEALL) { ASSERT_EQ(~TestBSTFixture(), true);
-// }//How to test destructor
-
 // int main(int argc, char** argv) {
 //     ::testing::InitGoogleTest(&argc, argv);
 //     return RUN_ALL_TESTS();

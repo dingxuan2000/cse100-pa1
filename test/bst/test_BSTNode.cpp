@@ -15,14 +15,14 @@ TEST(BST_NODE_TESTS, TEST_SUCCESSOR) {
     BSTNode<int> node(3);
     ASSERT_EQ(node.successor(), nullptr);
 }
-class TestBSTNodeFixture : public ::testing::Test {
-  protected:
-    BSTNode<int> node;
-    int data;
+// class TestBSTNodeFixture : public ::testing::Test {
+//   protected:
+//     BSTNode<int> node;
+//     int data;
 
-  public:
-    TestBSTNodeFixture(const) {}
-};
+//   public:
+//     // TestBSTNodeFixture(const) {}
+// };
 TEST(TestBSTNodeFixture, CHECK_GETDATA) {
     BSTNode<int> node(8);
     ASSERT_EQ(node.getData(), 8);
