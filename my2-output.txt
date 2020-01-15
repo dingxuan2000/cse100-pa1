@@ -1,0 +1,23 @@
+GREETINGS! TYPE COMMANDS TO VISUALIZE YOUR BST.
+Insert: Successfully inserted value 1
+Insert: Successfully inserted value 3
+Insert: Successfully inserted value 5
+Find: Value 2 not found!
+Empty: false
+Iterator: 1
+Iterator: 3
+Iterator: 5
+Iterator: Hit end of tree
+Iterator: Cannot traverse to next; hit end of tree
+Printing BST Structure
+1				
+X		3		
+X	X	X	5	
+BST balanced
+Printing BST Structure
+(Empty tree)
+Height: -1
+Size: 0
+Delete: Failed to delete value 5
+Printing BST Structure
+(Empty tree)

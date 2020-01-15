@@ -1,5 +1,6 @@
 /**
  * TODO: add file header
+ * T
  */
 #ifndef BST_HPP
 #define BST_HPP
@@ -12,6 +13,7 @@ using namespace std;
 
 /**
  * TODO: add class header
+ * Used
  */
 template <typename Data>
 class BST {
@@ -41,9 +43,7 @@ class BST {
     }
 
     /** TODO */
-    ~BST() {
-        // deleteAll(this->root);
-    }
+    ~BST() { deleteAll(this->root); }
 
     /** TODO */
     bool insert(const Data& item) {
