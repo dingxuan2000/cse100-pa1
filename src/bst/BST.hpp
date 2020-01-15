@@ -88,9 +88,11 @@ class BST {
                     currentptr = currentptr->left;
                     height = height + 1;  // to get the left-most node's height
                 }
-            } else
-                return false;  // when the data of currentptr == item, appear
-                               // duplicate case
+            } else {
+                delete newNode;
+                return false;
+            }  // when the data of currentptr == item, appear
+               // duplicate case
         }
     }
 

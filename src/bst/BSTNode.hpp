@@ -9,6 +9,7 @@ using namespace std;
 
 /**
  * TODO: add class header
+ * Created each node and its
  */
 template <typename Data>
 class BSTNode {
