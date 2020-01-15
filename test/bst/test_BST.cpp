@@ -131,3 +131,4 @@ TEST_F(TestBSTFixture, CHECK_INORDER) {
     ASSERT_EQ(bst.inorder(), vtr);
 }
 TEST_F(TestBSTFixture, CHECK_BEGIN) { ASSERT_EQ(*(bst.begin()), 5); }
+TEST_F(TestBSTFixture, CHECK_END) { ASSERT_EQ(bst.end(), nullptr); }
