@@ -13,7 +13,9 @@ using namespace std;
 
 /**
  * TODO: add class header
- * Used
+ * Used BST class's insert method to build a BST, and through find method to
+ * check
+ *
  */
 template <typename Data>
 class BST {
