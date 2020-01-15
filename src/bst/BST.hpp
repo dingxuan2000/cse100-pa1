@@ -41,7 +41,9 @@ class BST {
     }
 
     /** TODO */
-    ~BST() {}
+    ~BST() {
+        // deleteAll(this->root);
+    }
 
     /** TODO */
     bool insert(const Data& item) {
@@ -224,6 +226,10 @@ class BST {
            recursively delete right sub-tree
            delete current node
         */
+        if (n == 0) return;
+        deleteAll(n->left);
+        deleteAll(n->right);
+        delete n;
     }
 
     /** TODO */
@@ -233,6 +239,7 @@ class BST {
     }
 
     // Add more helper functions below
+    // private helper method to help inorder()
     static void inorderpush(BSTNode<Data>* root1, vector<Data>& storevtr) {
         if ((root1 != 0) && (root1->left != 0)) {
             inorderpush(root1->left, storevtr);
