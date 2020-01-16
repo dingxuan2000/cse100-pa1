@@ -156,6 +156,7 @@ class BST {
     /** TODO */
     vector<Data> inorder() const {
         vector<Data> vtr;
+        if (this->root == 0) return vtr;
         inorderpush(this->root, vtr);
         return vtr;
     }
@@ -217,6 +218,7 @@ class BST {
     /** TODO Helper function for begin() */
     // returns a pointer to the node with the samllest data(the left-most node)
     static BSTNode<Data>* first(BSTNode<Data>* root) {
+        if (root == 0) return NULL;
         while (root->left != NULL) {
             root = root->left;
         }

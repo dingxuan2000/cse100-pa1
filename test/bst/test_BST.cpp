@@ -71,6 +71,23 @@ TEST(BSTTests, EMPTY_ROOT) {
     BST<int> bst;
     ASSERT_EQ(bst.empty(), true) << "Before inserting, the tree is empty.";
 }
+TEST(BSTTests, EMPTY_INSERT) {
+    BST<int> bst;
+    ASSERT_EQ(bst.insert(7), true);
+}
+TEST(BSTTests, EMPTY_FIND) {
+    BST<int> bst;
+    ASSERT_EQ(bst.find(7), nullptr);
+}
+TEST(BSTTests, EMPTY_BEGIN) {
+    BST<int> bst;
+    ASSERT_EQ(bst.begin(), nullptr);
+}
+TEST(BSTTests, EMPTY_INORDER) {
+    BST<int> bst;
+    vector<int> vtr{};
+    ASSERT_EQ(bst.inorder(), vtr);
+}
 class TestBSTFixture : public ::testing::Test {
   protected:
     BST<int> bst;
@@ -132,3 +149,7 @@ TEST_F(TestBSTFixture, CHECK_INORDER) {
 }
 TEST_F(TestBSTFixture, CHECK_BEGIN) { ASSERT_EQ(*(bst.begin()), 5); }
 TEST_F(TestBSTFixture, CHECK_END) { ASSERT_EQ(bst.end(), nullptr); }
+
+// TEST_F(TestBSTFixture, CHECK_PRINT) {
+
+// }
