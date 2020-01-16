@@ -1,5 +1,8 @@
 /**
  * TODO: add file header
+ * This file provides BSTNODE class to the BST class.
+ * Xuan Ding, xding@ucsd.edu
+ * Qilong Li, qil009@ucsd.edu
  */
 #ifndef BSTNODE_HPP
 #define BSTNODE_HPP
@@ -9,7 +12,11 @@ using namespace std;
 
 /**
  * TODO: add class header
- * Created each node and its
+ * the field of BSTNODE class contains private member: data.
+ * left, right and parent pointer of the node.
+ * The class includes public mutator and accessor which allows user to
+ * read and write to data. It also contains successor method which returns the
+ * address of node that contains next smallest data.
  */
 template <typename Data>
 class BSTNode {
@@ -34,7 +41,9 @@ class BSTNode {
     /** Get the value of data */
     Data getData() { return data; }
 
-    /** TODO */
+    /** TODO
+     * returns the address of next smallest data
+     */
     BSTNode<Data>* successor() {
         // First case: the current node has the right child, and then traverse
         // the right-subtree to get the smallest element in that sub-tree.
@@ -47,6 +56,7 @@ class BSTNode {
             return smallest;
         } else {
             smallest = this;
+            // Traverse its parent nodes recursively
             while (smallest->parent != NULL) {
                 if (smallest == smallest->parent->left)
                     return smallest->parent;

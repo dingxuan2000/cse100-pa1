@@ -1,6 +1,8 @@
 /**
  * TODO: add file header
- * T
+ * This file implements the BST class. Source: stepik book
+ * Xuan Ding, xding@ucsd.edu
+ * Qilong Li, qil009@ucsd.edu
  */
 #ifndef BST_HPP
 #define BST_HPP
@@ -12,10 +14,13 @@
 using namespace std;
 
 /**
- * TODO: add class header
- * Used BST class's insert method to build a BST, and through find method to
- * check
- *
+ * TODO: add class header:
+ * This class uses protected fields of BSTNode<data>* inherted from
+ * BSTNODE.hpp to create a binary search tree with no duplicates.
+ * It contains protected fields include isize and height.
+ * Besides, class default constructor creates an empty bst tree with root = 0,
+ * isize = 0, iheight = -1. User is able to insert and search as well as
+ * traversing the tree.
  */
 template <typename Data>
 class BST {
@@ -47,60 +52,86 @@ class BST {
     /** TODO */
     ~BST() { deleteAll(this->root); }
 
-    /** TODO */
+    /** TODO
+     * Parameter: a constant generic type variable's reference item.
+     * Return true if insert the item correctly;
+     * Return false if insert the item incorrectly.
+     * If the tree is empty, we just created a node as the root, with value
+     * "item". If the tree is nonempty, we should traverse the tree, find the
+     * correct position to insert the node with value "item".
+     */
     bool insert(const Data& item) {
         BSTNode<Data>* newNode = new BSTNode<Data>(item);
-        if (this->root == 0) {  // 0 is same as NULL
+        // case1: empty tree, insert a node as root.(0 is same as NULL)
+        if (this->root == 0) {
             this->root = newNode;
             isize = isize + 1;
+            // Only insert a node, height become 0.
             iheight = iheight + 1;
             return true;
         }
-        int height = 0;
+        int height = 0;  // for us to record the height of BST
         BSTNode<Data>* currentptr = this->root;  // start at root
+        // case2: when nonempty BST
         while (currentptr != NULL) {
+            // go to right when the item is greater than current node
             if (currentptr->getData() < item) {
+                // if the right is null, create a node
                 if (currentptr->right == NULL) {
                     currentptr->right = newNode;
-                    newNode->parent =
-                        currentptr;  // set the newNode's parent=currentptr
-                    isize = isize + 1;
-                    height = height +
-                             1;  // when insert a newNode, the height must +1
-                    if (height > this->iheight) {
-                        this->iheight = height;
-                    }
-                    return true;
-                } else {
-                    currentptr = currentptr->right;
-                    height = height + 1;  // to get the right-most node's height
-                }
-            } else if (item < currentptr->getData()) {
-                if (currentptr->left == NULL) {
-                    currentptr->left = newNode;
-                    newNode->parent =
-                        currentptr;  // set the newNode's parent=currentptr
+                    // set the newNode's parent=currentptr
+                    newNode->parent = currentptr;
+                    // when insert a newNode, the height and size must +1
                     isize = isize + 1;
                     height = height + 1;
+                    // compare the height and the initial height, update height
                     if (height > this->iheight) {
                         this->iheight = height;
                     }
+                    // sucessfully inserted the item
                     return true;
                 } else {
+                    // traverse the right-subtree
+                    currentptr = currentptr->right;
+                    // to get the right-most node's height
+                    height = height + 1;
+                }
+                // go to left when the item is smaller than current node
+            } else if (item < currentptr->getData()) {
+                // if the left is null, create a node
+                if (currentptr->left == NULL) {
+                    currentptr->left = newNode;
+                    // set the newNode's parent=currentptr
+                    newNode->parent = currentptr;
+                    isize = isize + 1;
+                    height = height + 1;
+                    // compare the height and the initial height, update height
+                    if (height > this->iheight) {
+                        this->iheight = height;
+                    }
+                    // sucessfully inserted the item
+                    return true;
+                } else {
+                    // the left is not null, traverse the left tree.
                     currentptr = currentptr->left;
                     height = height + 1;  // to get the left-most node's height
                 }
             } else {
-                delete newNode;  // when the newNode is duplicate, must to
-                                 // delete it.
+                /**when the data of currentptr == item, appear duplicate case.
+                 * when the newNode is duplicate, must to delete it.
+                 */
+                delete newNode;
                 return false;
-            }  // when the data of currentptr == item, appear
-               // duplicate case
+            }
         }
     }
 
-    /** TODO */
-    // BSTIterator<Data>
+    /** TODO
+     * Parameter: a constant generic type variable's reference item.
+     * Return an interator object when find the node with value "item",
+     * Created a pointer to traverse the tree, and pass the correct pointer
+     * to the iterator object, then return this iterator object.
+     */
     iterator find(const Data& item) const {
         BSTNode<Data>* ptr;  // create a pointer that points to root
         ptr = this->root;
@@ -125,10 +156,15 @@ class BST {
     /** TODO */  // PART 2
     bool deleteNode(const Data& item) { return false; }
 
-    /** TODO */
+    /** TODO
+     * return the size of BST
+     */
     unsigned int size() const { return this->isize; }
 
-    /** TODO */
+    /** TODO
+     * return the height of BST.
+     * If it's an empty BST, return -1.
+     */
     int height() const {
         if (this->empty()) return -1;  // when it's an empty tree, return -1
         return this->iheight;
@@ -153,10 +189,14 @@ class BST {
     /** Return an iterator pointing past the last item in the BST. */
     iterator end() const { return typename BST<Data>::iterator(0); }
 
-    /** TODO */
+    /** TODO
+     * return a vector that contains all the data in BST in ascending ordering.
+     */
     vector<Data> inorder() const {
         vector<Data> vtr;
+        // When BST is empty, return an empty vector.
         if (this->root == 0) return vtr;
+        // call the private helper method: inorderpush
         inorderpush(this->root, vtr);
         return vtr;
     }
@@ -215,8 +255,10 @@ class BST {
     }
 
   private:
-    /** TODO Helper function for begin() */
-    // returns a pointer to the node with the samllest data(the left-most node)
+    /** TODO Helper function for begin()
+     * Parameter: a BSTNode<Data> type pointer
+     * returns a pointer to the node with the samllest data(the left-most node)
+     */
     static BSTNode<Data>* first(BSTNode<Data>* root) {
         if (root == 0) return NULL;
         while (root->left != NULL) {
@@ -225,7 +267,10 @@ class BST {
         return root;
     }
 
-    /** TODO */
+    /** TODO
+     * Parameter: a BSTNode<Data> type pointer
+     * Being called in the destructor, to recursively delete all the nodes.
+     */
     static void deleteAll(BSTNode<Data>* n) {
         /* Pseudocode:
            if current node is null: return;
@@ -246,7 +291,11 @@ class BST {
     }
 
     // Add more helper functions below
-    // private helper method to help inorder()
+    /**private helper method to help inorder()
+     * Parameter: a BSTNode<Data> type poiner, a vector reference variable
+     *Being called in inorder(), recursively pushed all the data in BST to
+     *the vector.
+     */
     static void inorderpush(BSTNode<Data>* root1, vector<Data>& storevtr) {
         if ((root1 != 0) && (root1->left != 0)) {
             inorderpush(root1->left, storevtr);

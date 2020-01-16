@@ -1,5 +1,8 @@
 /**
  * TODO: add file header
+ * This file implements BSTiterator class to the BST class.
+ * Xuan Ding, xding@ucsd.edu
+ * Qilong Li, qil009@ucsd.edu
  */
 #ifndef BSTITERATOR_HPP
 #define BSTITERATOR_HPP
@@ -11,6 +14,9 @@ using namespace std;
 
 /**
  * TODO: add class header
+ * This class contains field of BSTNode<Data> pointer which allows user to
+ * create iterator object to iterate through the BST in ascsending order.
+ * Iterator is overloaded with ++ operator for increment.
  */
 template <typename Data>
 class BSTIterator : public iterator<input_iterator_tag, Data> {
@@ -40,12 +46,18 @@ class BSTIterator : public iterator<input_iterator_tag, Data> {
         return before;
     }
 
-    /** TODO */
+    /** TODO
+     * Parameter: an constant BSTIterator<Data> type reference Iterator object
+     * returns true if two objects' ptr points at the same address
+     */
     bool operator==(BSTIterator<Data> const& other) const {
         return (this->curr == other.curr);
     }
 
-    /** TODO */
+    /** TODO
+     * Parameter: an constant BSTIterator<Data> type reference Iterator object
+     *  returns true if two object's ptr points at the different address
+     */
     bool operator!=(BSTIterator<Data> const& other) const {
         return (this->curr != other.curr);
     }
