@@ -102,40 +102,23 @@ class TestBSTFixture : public ::testing::Test {
     }
     ~TestBSTFixture() {}
 };
-TEST_F(TestBSTFixture, NON_EMPTY_ROOT) {
-    // BST<int> bst;
-    bst.insert(7);
-    bst.insert(12);
-    bst.insert(5);
-    bst.insert(18);
-    bst.insert(6);
-    ASSERT_EQ(bst.empty(), false);
-}
+TEST_F(TestBSTFixture, NON_EMPTY_ROOT) { ASSERT_EQ(bst.empty(), false); }
 TEST_F(TestBSTFixture, NON_EMPTY_Size) {
-    // BST<int> bst;
-    bst.insert(7);
-    bst.insert(12);
-    bst.insert(5);
-    bst.insert(18);
-    bst.insert(6);
     ASSERT_EQ(bst.size(), 5) << "After inserting, the size is 5.";
 }
 TEST_F(TestBSTFixture, NON_EMPTY_Height) {
-    // BST<int> bst;
-    bst.insert(7);
-    bst.insert(12);
-    bst.insert(5);
-    bst.insert(18);
-    bst.insert(6);
     ASSERT_EQ(bst.height(), 2) << "After inserting, the height is 2.";
 }
 TEST_F(TestBSTFixture, CHECK_INSERT) {
-    // BST<int> bst;
     EXPECT_FALSE(bst.insert(7));
+    // bst.insert(4);
     EXPECT_TRUE(bst.insert(4));
+    EXPECT_EQ(bst.height(), 2);
+    // bst.insert(19);
+    EXPECT_TRUE(bst.insert(19));
+    EXPECT_EQ(bst.height(), 3);
 }
 TEST_F(TestBSTFixture, CHECK_FIND) {
-    // BST<int> bst;
     EXPECT_EQ(bst.find(4), nullptr);
     EXPECT_EQ(*(bst.find(7)), 7);
     EXPECT_EQ(*(bst.find(12)), 12);
@@ -150,6 +133,4 @@ TEST_F(TestBSTFixture, CHECK_INORDER) {
 TEST_F(TestBSTFixture, CHECK_BEGIN) { ASSERT_EQ(*(bst.begin()), 5); }
 TEST_F(TestBSTFixture, CHECK_END) { ASSERT_EQ(bst.end(), nullptr); }
 
-// TEST_F(TestBSTFixture, CHECK_PRINT) {
-
-// }
+TEST_F(TestBSTFixture, CHECK_PRINT) { bst.print(&cout); }
