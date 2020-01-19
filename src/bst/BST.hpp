@@ -50,6 +50,8 @@ class BST {
         int start = 0;
         int end = bst.size() - 1;
         this->root = buildSubtree(vtr, start, end, this->iheight);
+        // this->iheight = finddepth(this->root, -1);
+        // this->isize = bst.isize;
         // iheight = GetBalancedDepth(bst.size());
     }
 
@@ -175,7 +177,7 @@ class BST {
                     else
                         curr->parent->right = NULL;
                     this->isize = this->isize - 1;
-                    this->iheight = GetBalancedDepth(this->isize);
+                    this->iheight = finddepth(this->root, this->isize);
                     return true;
                 }
                 // case2:node has two child
@@ -184,8 +186,9 @@ class BST {
                     Data temp = curr->successor()->getData();
                     curr->setData(temp);
                     delete curr->right;
+                    curr->right = NULL;
                     this->isize = this->isize - 1;
-                    this->iheight = GetBalancedDepth(this->isize);
+                    this->iheight = finddepth(this->root, this->isize);
                     return true;
                 }
                 // case3: node has exactly one child
@@ -193,15 +196,22 @@ class BST {
                     if (curr->left != NULL) {
                         curr->left->parent = curr;
                         delete curr;
-
+                        if (curr->parent->left == curr)
+                            curr->parent->left = NULL;
+                        else
+                            curr->parent->right = NULL;
                         this->isize = this->isize - 1;
-                        this->iheight = GetBalancedDepth(this->isize);
+                        this->iheight = finddepth(this->root, this->isize);
                         return true;
                     } else {
                         curr->right->parent = curr;
                         delete curr;
+                        if (curr->parent->left == curr)
+                            curr->parent->left = NULL;
+                        else
+                            curr->parent->right = NULL;
                         this->isize = this->isize - 1;
-                        this->iheight = GetBalancedDepth(this->isize);
+                        this->iheight = finddepth(this->root, this->isize);
                         return true;
                     }
                 }
@@ -347,15 +357,16 @@ class BST {
         if (start > end) return 0;
         int median = (start + end + 1) / 2;
         BSTNode<Data>* rootptr = new BSTNode<Data>(data[median]);
-        // depth = depth + 1;
+        depth = depth + 1;
         if (this->iheight < depth) this->iheight = depth;
         // left subtree
-        rootptr->left = buildSubtree(data, start, median - 1, depth + 1);
-        // if (rootptr->left != NULL) (rootptr->left)->parent = rootptr;
+        rootptr->left = buildSubtree(data, start, median - 1, depth);
+        if (rootptr->left != NULL) (rootptr->left)->parent = rootptr;
+
         // right subtree, the range of (median+1 to end) has problem.
 
-        rootptr->right = buildSubtree(data, median + 1, end, depth + 1);
-        // if (rootptr->right != NULL) (rootptr->right)->parent = rootptr;
+        rootptr->right = buildSubtree(data, median + 1, end, depth);
+        if (rootptr->right != NULL) (rootptr->right)->parent = rootptr;
         return rootptr;
     }
 
@@ -374,13 +385,15 @@ class BST {
             inorderpush(root1->right, storevtr);
         }
     }
-    int GetBalancedDepth(int size) {
-        int count = 0;
-        while (size > 1) {
-            size = size / 2;
-            count++;
+    int finddepth(BSTNode<Data>* root, int depth) {
+        if (root == 0) return -1;
+        int height = 0;
+        finddepth(root->left, depth + 1);
+        finddepth(root->right, depth + 1);
+        if (height < depth) {
+            height = depth;
         }
-        return count;
+        return height;
     }
 };
 

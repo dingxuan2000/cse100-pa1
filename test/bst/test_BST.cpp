@@ -91,6 +91,7 @@ TEST(BSTTests, EMPTY_INORDER) {
 class TestBSTFixture : public ::testing::Test {
   protected:
     BST<int> bst;
+    // BST<int> newbst(*bst);
 
   public:
     TestBSTFixture() {
@@ -99,6 +100,11 @@ class TestBSTFixture : public ::testing::Test {
         bst.insert(5);
         bst.insert(18);
         bst.insert(6);
+        // newbst.insert(7);
+        // newbst.insert(12);
+        // newbst.insert(5);
+        // newbst.insert(18);
+        // newbst.insert(6);
     }
     ~TestBSTFixture() {}
 };
@@ -134,12 +140,14 @@ TEST_F(TestBSTFixture, CHECK_BEGIN) { ASSERT_EQ(*(bst.begin()), 5); }
 TEST_F(TestBSTFixture, CHECK_END) { ASSERT_EQ(bst.end(), nullptr); }
 
 TEST_F(TestBSTFixture, CHECK_PRINT) { bst.print(&cout); }
-TEST_F(TestBSTFixture, CHECK_BUILDSUBTREE) {
-    // BST<int> bstr;
-    // vector<int> vtr{7, 9, 10, 11, 20, 30};
-    // int start = 0;
-    // int end = 5;
-    // int depth = -1;
-    // BSTNode<int>* root = bstr.buildSubtree(vtr, start, end, depth);
-    // cout << *root << endl;
-}
+// TEST(TestBSTFixture, CHECK_BUILDSUBTREE) {
+//     BST<int> bstr;
+//     bstr.insert(7);
+//     bstr.insert(12);
+//     bstr.insert(5);
+//     bstr.insert(18);
+//     bstr.insert(6);
+//     BST<int> newbst(bstr);
+//     //newbst.print(&cout);
+//     ASSERT_EQ(newbst.deleteNode(5), true);
+// }
