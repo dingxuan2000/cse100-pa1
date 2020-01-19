@@ -140,14 +140,14 @@ TEST_F(TestBSTFixture, CHECK_BEGIN) { ASSERT_EQ(*(bst.begin()), 5); }
 TEST_F(TestBSTFixture, CHECK_END) { ASSERT_EQ(bst.end(), nullptr); }
 
 TEST_F(TestBSTFixture, CHECK_PRINT) { bst.print(&cout); }
-// TEST(TestBSTFixture, CHECK_BUILDSUBTREE) {
-//     BST<int> bstr;
-//     bstr.insert(7);
-//     bstr.insert(12);
-//     bstr.insert(5);
-//     bstr.insert(18);
-//     bstr.insert(6);
-//     BST<int> newbst(bstr);
-//     //newbst.print(&cout);
-//     ASSERT_EQ(newbst.deleteNode(5), true);
-// }
+TEST(BSTFixture, CHECK_DELETENODE) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(12);
+    bstr.insert(5);
+    bstr.insert(18);
+    bstr.insert(6);
+    bstr.insert(4);
+    vector<int> vtr = bstr.inorder();
+    ASSERT_TRUE(bstr.deleteNode(6));
+}

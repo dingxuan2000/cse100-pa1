@@ -47,9 +47,9 @@ class BST {
     /** TODO */
     BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {
         vector<Data> vtr = bst.inorder();
-        int start = 0;
-        int end = bst.size() - 1;
-        this->root = buildSubtree(vtr, start, end, this->iheight);
+        // int start = 0;
+        // int end = bst.size() - 1;
+        this->root = buildSubtree(vtr, 0, bst.size() - 1, this->iheight);
         // this->iheight = finddepth(this->root, -1);
         // this->isize = bst.isize;
         // iheight = GetBalancedDepth(bst.size());
@@ -170,14 +170,15 @@ class BST {
             else {
                 // case1: if curr is a leaf node
                 if ((curr->left == NULL) && (curr->right == NULL)) {
-                    delete curr;
                     // we have to set NULL pointer after deleting
                     if (curr == curr->parent->left)
                         curr->parent->left = NULL;
                     else
                         curr->parent->right = NULL;
+                    delete curr;
+
                     this->isize = this->isize - 1;
-                    this->iheight = finddepth(this->root, this->isize);
+                    this->iheight = finddepth(this->root);
                     return true;
                 }
                 // case2:node has two child
@@ -185,33 +186,36 @@ class BST {
                     // replace the current node's data with its successor node
                     Data temp = curr->successor()->getData();
                     curr->setData(temp);
-                    delete curr->right;
                     curr->right = NULL;
+                    delete curr->right;
+
                     this->isize = this->isize - 1;
-                    this->iheight = finddepth(this->root, this->isize);
+                    this->iheight = finddepth(this->root);
                     return true;
                 }
                 // case3: node has exactly one child
                 else {
                     if (curr->left != NULL) {
                         curr->left->parent = curr;
-                        delete curr;
                         if (curr->parent->left == curr)
                             curr->parent->left = NULL;
                         else
                             curr->parent->right = NULL;
+                        delete curr;
+
                         this->isize = this->isize - 1;
-                        this->iheight = finddepth(this->root, this->isize);
+                        this->iheight = finddepth(this->root);
                         return true;
                     } else {
                         curr->right->parent = curr;
-                        delete curr;
                         if (curr->parent->left == curr)
                             curr->parent->left = NULL;
                         else
                             curr->parent->right = NULL;
+                        delete curr;
+
                         this->isize = this->isize - 1;
-                        this->iheight = finddepth(this->root, this->isize);
+                        this->iheight = finddepth(this->root);
                         return true;
                     }
                 }
@@ -385,16 +389,31 @@ class BST {
             inorderpush(root1->right, storevtr);
         }
     }
-    int finddepth(BSTNode<Data>* root, int depth) {
-        if (root == 0) return -1;
-        int height = 0;
-        finddepth(root->left, depth + 1);
-        finddepth(root->right, depth + 1);
-        if (height < depth) {
-            height = depth;
-        }
-        return height;
+    int finddepth(BSTNode<Data>* root) {
+        if (root == NULL) return -1;
+        // int height = 0;
+        // depth = depth + 1;
+        int lDepth = finddepth(root->left);
+        int rDepth = finddepth(root->right);
+        if (lDepth > rDepth)
+            return (lDepth + 1);
+        else
+            return (rDepth + 1);
+        // int height = (lDepth < rDepth) ? rDepth : lDepth;
+        // return height;
     }
+    // int maxDepth(BSTNode<Data>* node) {
+    //     if (node == NULL)
+    //         return -1;
+    //     else {
+    //         int lDepth = maxDepth(node->left);
+    //         int rDepth = maxDepth(node->right);
+    //         if (lDepth > rDepth)
+    //             return (lDepth + 1);
+    //         else
+    //             return (rDepth + 1);
+    //     }
+    // }
 };
 
 #endif  // BST_HPP

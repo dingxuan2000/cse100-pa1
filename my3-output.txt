@@ -9,25 +9,12 @@ Insert: Successfully inserted value 13
 Find: Value 13 found!
 Delete: Successfully deleted value 13
 Size: 6
-Height: 6
+Height: -1
 Find: Value 13 not found!
 Printing BST Structure
-10																																																																
-7																																15																																
-3																9																12																X																
-X								X								X								X								X								X								X								X								
-X				X				X				X				X				X				X				X				X				X				X				X				X				X				X				X				
-X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		
-X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	
 Find: Value 3 found!
 Delete: Successfully deleted value 3
 Size: 5
-Height: 5
+Height: -1
 Find: Value 3 not found!
 Printing BST Structure
-10																																
-7																15																
-X								9								12								X								
-X				X				X				X				X				X				X				X				
-X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		X		
-X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	X	
