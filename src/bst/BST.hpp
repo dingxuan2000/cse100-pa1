@@ -171,57 +171,106 @@ class BST {
                 // case1: if curr is a leaf node
                 if ((curr->left == NULL) && (curr->right == NULL)) {
                     // we have to set NULL pointer after deleting
-                    if (curr == curr->parent->left)
+                    if (curr == curr->parent->left) {
                         curr->parent->left = NULL;
-                    else
+                        delete curr;
+                        this->isize = this->isize - 1;
+                        this->iheight = finddepth(this->root);
+                        return true;
+                    } else {
                         curr->parent->right = NULL;
-                    delete curr;
+                        delete curr;
+                        this->isize = this->isize - 1;
+                        this->iheight = finddepth(this->root);
+                        return true;
+                    }
 
-                    this->isize = this->isize - 1;
-                    this->iheight = finddepth(this->root);
-                    return true;
                 }
                 // case2:node has two child
                 else if ((curr->left != NULL) && (curr->right != NULL)) {
-                    // replace the current node's data with its successor node
-                    if ((curr->successor())->right == NULL) {
-                        Data temp = curr->successor()->getData();
-                        curr->setData(temp);
-                        curr->right = NULL;
-                        delete curr->right;
-                    } else {
-                        curr->successor()->right->parent = curr->parent;
-                        delete curr->successor();
-                    }
+                    // Set a pointer that points to curr node's successor
+                    BSTNode<Data>* successorPtr = curr->successor();
+                    // 1. when successorPtr doesn't have the right child, then
+                    // just replace the curr node's data with its successorPtr's
+                    // data.
+                    if (successorPtr->right == NULL) {
+                        curr->setData(successorPtr->getData());
+                        // depends on the successorPtr is on the left or right
+                        if (successorPtr == successorPtr->parent->right) {
+                            // Set the successorPtr as NULL, and delete it
+                            successorPtr->parent->right = NULL;
+                            delete successorPtr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
 
-                    this->isize = this->isize - 1;
-                    this->iheight = finddepth(this->root);
-                    return true;
+                        } else {
+                            // When the successorPtr is on the left, set as
+                            // NULL, and delete it.
+                            successorPtr->parent->left = NULL;
+                            delete successorPtr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
+                    }
+                    // 2. when the successorPtr has the right subtree, then we
+                    // need the replace its data with curr node's data. And
+                    // connect successorPtr's right subtree with its parent. In
+                    // this case, the successorPtr can't have the left subtree.
+                    else {
+                        curr->setData(successorPtr->getData());
+                        // connect successorPtr's child with its partent
+                        successorPtr->right->parent = curr;
+                        curr->right = successorPtr->right;
+                        // then delete successorPtr
+                        delete successorPtr;
+                        this->isize = this->isize - 1;
+                        this->iheight = finddepth(this->root);
+                        return true;
+                    }
                 }
                 // case3: node has exactly one child
                 else {
                     if (curr->left != NULL) {
                         curr->left->parent = curr->parent;
-                        // if (curr->parent->left == curr)
-                        //     curr->parent->left = NULL;
-                        // else
-                        //     curr->parent->right = NULL;
-                        delete curr;
+                        // 1.if curr node is its parent's left node
+                        if (curr == curr->parent->left) {
+                            curr->parent->left = curr->left;
+                            delete curr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
+                        // 2.if curr node is its parent's right node
+                        else {
+                            curr->parent->right = curr->left;
+                            delete curr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
 
-                        this->isize = this->isize - 1;
-                        this->iheight = finddepth(this->root);
-                        return true;
-                    } else {
+                    }
+                    // when curr node's only one child is on the right
+                    else {
                         curr->right->parent = curr->parent;
-                        // if (curr->parent->left == curr)
-                        //     curr->parent->left = NULL;
-                        // else
-                        //     curr->parent->right = NULL;
-                        delete curr;
-
-                        this->isize = this->isize - 1;
-                        this->iheight = finddepth(this->root);
-                        return true;
+                        // 1.if curr node is its parent's left node
+                        if (curr == curr->parent->left) {
+                            curr->parent->left = curr->right;
+                            delete curr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
+                        // 2.if curr node is its parent's right node
+                        else {
+                            curr->parent->right = curr->right;
+                            delete curr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
                     }
                 }
             }

@@ -5,15 +5,11 @@ Insert: Successfully inserted value 9
 Insert: Successfully inserted value 2
 Insert: Successfully inserted value 5
 Insert: Successfully inserted value 8
-Insert: Successfully inserted value 13
-Insert: Successfully inserted value 18
-Insert: Successfully inserted value 20
 Delete: Successfully deleted value 9
-Size: 8
-Height: 3
-Find: Value 8 found!
+Size: 5
+Height: 2
+Find: Value 9 not found!
 Printing BST Structure
-7								
-4				13				
-2		5		8		18		
-X	X	X	X	X	X	X	20	
+7				
+4		8		
+2	5	X	X	
