@@ -184,10 +184,15 @@ class BST {
                 // case2:node has two child
                 else if ((curr->left != NULL) && (curr->right != NULL)) {
                     // replace the current node's data with its successor node
-                    Data temp = curr->successor()->getData();
-                    curr->setData(temp);
-                    curr->right = NULL;
-                    delete curr->right;
+                    if ((curr->successor())->right == NULL) {
+                        Data temp = curr->successor()->getData();
+                        curr->setData(temp);
+                        curr->right = NULL;
+                        delete curr->right;
+                    } else {
+                        curr->successor()->right->parent = curr->parent;
+                        delete curr->successor();
+                    }
 
                     this->isize = this->isize - 1;
                     this->iheight = finddepth(this->root);
@@ -196,22 +201,22 @@ class BST {
                 // case3: node has exactly one child
                 else {
                     if (curr->left != NULL) {
-                        curr->left->parent = curr;
-                        if (curr->parent->left == curr)
-                            curr->parent->left = NULL;
-                        else
-                            curr->parent->right = NULL;
+                        curr->left->parent = curr->parent;
+                        // if (curr->parent->left == curr)
+                        //     curr->parent->left = NULL;
+                        // else
+                        //     curr->parent->right = NULL;
                         delete curr;
 
                         this->isize = this->isize - 1;
                         this->iheight = finddepth(this->root);
                         return true;
                     } else {
-                        curr->right->parent = curr;
-                        if (curr->parent->left == curr)
-                            curr->parent->left = NULL;
-                        else
-                            curr->parent->right = NULL;
+                        curr->right->parent = curr->parent;
+                        // if (curr->parent->left == curr)
+                        //     curr->parent->left = NULL;
+                        // else
+                        //     curr->parent->right = NULL;
                         delete curr;
 
                         this->isize = this->isize - 1;
