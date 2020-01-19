@@ -351,11 +351,11 @@ class BST {
         if (this->iheight < depth) this->iheight = depth;
         // left subtree
         rootptr->left = buildSubtree(data, start, median - 1, depth + 1);
-        if (rootptr->left != NULL) (rootptr->left)->parent = rootptr;
+        // if (rootptr->left != NULL) (rootptr->left)->parent = rootptr;
         // right subtree, the range of (median+1 to end) has problem.
 
         rootptr->right = buildSubtree(data, median + 1, end, depth + 1);
-        if (rootptr->right != NULL) (rootptr->right)->parent = rootptr;
+        // if (rootptr->right != NULL) (rootptr->right)->parent = rootptr;
         return rootptr;
     }
 
