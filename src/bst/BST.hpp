@@ -46,7 +46,11 @@ class BST {
 
     /** TODO */
     BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {
-        // PART 2
+        vector<Data> vtr = bst.inorder();
+        int start = 0;
+        int end = bst.size() - 1;
+        this->root = buildSubtree(vtr, start, end, this->iheight);
+        // iheight = GetBalancedDepth(bst.size());
     }
 
     /** TODO */
@@ -154,7 +158,58 @@ class BST {
     }
 
     /** TODO */  // PART 2
-    bool deleteNode(const Data& item) { return false; }
+    bool deleteNode(const Data& item) {
+        BSTNode<Data>* curr = this->root;
+        while (curr != NULL) {
+            if (curr->getData() < item)
+                curr = curr->right;
+            else if (item < curr->getData())
+                curr = curr->left;
+            else {
+                // case1: if curr is a leaf node
+                if ((curr->left == NULL) && (curr->right == NULL)) {
+                    delete curr;
+                    // we have to set NULL pointer after deleting
+                    if (curr == curr->parent->left)
+                        curr->parent->left = NULL;
+                    else
+                        curr->parent->right = NULL;
+                    this->isize = this->isize - 1;
+                    this->iheight = GetBalancedDepth(this->isize);
+                    return true;
+                }
+                // case2:node has two child
+                else if ((curr->left != NULL) && (curr->right != NULL)) {
+                    // replace the current node's data with its successor node
+                    Data temp = curr->successor()->getData();
+                    curr->setData(temp);
+                    delete curr->right;
+                    this->isize = this->isize - 1;
+                    this->iheight = GetBalancedDepth(this->isize);
+                    return true;
+                }
+                // case3: node has exactly one child
+                else {
+                    if (curr->left != NULL) {
+                        curr->left->parent = curr;
+                        delete curr;
+
+                        this->isize = this->isize - 1;
+                        this->iheight = GetBalancedDepth(this->isize);
+                        return true;
+                    } else {
+                        curr->right->parent = curr;
+                        delete curr;
+                        this->isize = this->isize - 1;
+                        this->iheight = GetBalancedDepth(this->isize);
+                        return true;
+                    }
+                }
+            }
+        }
+        // not found the node with item that need to be deleted
+        return false;
+    }
 
     /** TODO
      * return the size of BST
@@ -287,7 +342,21 @@ class BST {
     /** TODO */
     BSTNode<Data>* buildSubtree(vector<Data>& data, int start, int end,
                                 int depth) {
-        return 0;
+        // Example: 7, 9 ,10, 11, 20, 30
+
+        if (start > end) return 0;
+        int median = (start + end + 1) / 2;
+        BSTNode<Data>* rootptr = new BSTNode<Data>(data[median]);
+        // depth = depth + 1;
+        if (this->iheight < depth) this->iheight = depth;
+        // left subtree
+        rootptr->left = buildSubtree(data, start, median - 1, depth + 1);
+        if (rootptr->left != NULL) (rootptr->left)->parent = rootptr;
+        // right subtree, the range of (median+1 to end) has problem.
+
+        rootptr->right = buildSubtree(data, median + 1, end, depth + 1);
+        if (rootptr->right != NULL) (rootptr->right)->parent = rootptr;
+        return rootptr;
     }
 
     // Add more helper functions below
@@ -304,6 +373,14 @@ class BST {
         if ((root1 != 0) && (root1->right != 0)) {
             inorderpush(root1->right, storevtr);
         }
+    }
+    int GetBalancedDepth(int size) {
+        int count = 0;
+        while (size > 1) {
+            size = size / 2;
+            count++;
+        }
+        return count;
     }
 };
 
