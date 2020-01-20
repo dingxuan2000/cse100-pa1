@@ -47,6 +47,7 @@ class BST {
     /** TODO */
     BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {
         vector<Data> vtr = bst.inorder();
+        this->isize = bst.isize;
         this->root = buildSubtree(vtr, 0, bst.size() - 1, this->iheight);
     }
 
@@ -165,6 +166,10 @@ class BST {
             else {
                 // case1: if curr is a leaf node
                 if ((curr->left == NULL) && (curr->right == NULL)) {
+                    if (curr->parent == NULL) {
+                        curr = NULL;
+                        delete curr;
+                    }
                     // we have to set NULL pointer after deleting
                     if (curr == curr->parent->left) {
                         curr->parent->left = NULL;
@@ -214,65 +219,122 @@ class BST {
                     // connect successorPtr's right subtree with its parent. In
                     // this case, the successorPtr can't have the left subtree.
                     else {
-                        curr->setData(successorPtr->getData());
-                        // connect successorPtr's child with its partent
-                        successorPtr->right->parent = curr;
-                        curr->right = successorPtr->right;
-                        // then delete successorPtr
-                        delete successorPtr;
-                        this->isize = this->isize - 1;
-                        this->iheight = finddepth(this->root);
-                        return true;
+                        if (successorPtr == successorPtr->parent->left) {
+                            curr->setData(successorPtr->getData());
+                            successorPtr->right->parent = successorPtr->parent;
+                            successorPtr->parent->left = successorPtr->right;
+                            delete successorPtr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        } else {
+                            curr->setData(successorPtr->getData());
+                            // connect successorPtr's child with its partent
+                            successorPtr->right->parent = curr;
+                            curr->right = successorPtr->right;
+                            // then delete successorPtr
+                            delete successorPtr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
                     }
                 }
                 // case3: node has exactly one child
                 else {
+                    // //First, check if the curr that need to be deleted is
+                    // root!!! if (curr->parent == NULL) {
+                    //     //Then, if the
+                    //     this->root = curr->left;
+                    //     this->root->parent = NULL;
+                    //     delete curr;
+                    //     this->isize = this->isize - 1;
+                    //     this->iheight = finddepth(this->root);
+                    //     return true;
+                    // }
+                    //首先, curr的左边有孩子，右边没有孩子，考虑以下情况：
+                    // 1. 如果curr是root, 那么将curr->left设为新的root,
+                    // 并将这个新root的parent设为NULL.然后 delete curr node,
+                    // 并更新size, height, return true.
+                    // 2. curr是它parent的左孩子，那么可以指定curr->parent->left
+                    // = curr->left.
+                    // 3.
+                    // 如果curr是它parent的右孩子，那么可以指定curr->parent->right
+                    // = curr->left.
                     if (curr->left != NULL) {
-                        curr->left->parent = curr->parent;
-                        // 1.if curr node is its parent's left node
-                        if (curr == curr->parent->left) {
-                            curr->parent->left = curr->left;
+                        if (curr->parent == NULL) {
+                            this->root = curr->left;
+                            this->root->parent = NULL;
                             delete curr;
                             this->isize = this->isize - 1;
                             this->iheight = finddepth(this->root);
                             return true;
-                        }
-                        // 2.if curr node is its parent's right node
-                        else {
-                            curr->parent->right = curr->left;
-                            delete curr;
-                            this->isize = this->isize - 1;
-                            this->iheight = finddepth(this->root);
-                            return true;
-                        }
+                        } else {
+                            curr->left->parent = curr->parent;
+                            // 1.if curr node is its parent's left node
+                            if (curr == curr->parent->left) {
+                                curr->parent->left = curr->left;
+                                delete curr;
+                                this->isize = this->isize - 1;
+                                this->iheight = finddepth(this->root);
+                                return true;
+                            }
 
+                            // 2.if curr node is its parent's right node
+                            else {
+                                curr->parent->right = curr->left;
+                                delete curr;
+                                this->isize = this->isize - 1;
+                                this->iheight = finddepth(this->root);
+                                return true;
+                            }
+                        }
                     }
+                    // 接下来是，curr的右边有孩子，左边没有孩子，考虑以下情况：
+                    // 1. 如果curr就是root的话，那么将curr->right设为新的root,
+                    // 然后将这个新的root->parent
+                    //为NULL.然后delete curr node, update size, height, return
+                    // true.
+                    // 2.如果curr是它parent的left
+                    // child，那么将curr->parent->left = curr->right.
+                    // 3. 如果curr是它parent的right child,
+                    // 那么将curr->parent->right = curr->right.
                     // when curr node's only one child is on the right
                     else {
-                        curr->right->parent = curr->parent;
-                        // 1.if curr node is its parent's left node
-                        if (curr == curr->parent->left) {
-                            curr->parent->left = curr->right;
+                        if (curr->parent == NULL) {
+                            this->root = curr->right;
+                            this->root->parent = NULL;
                             delete curr;
                             this->isize = this->isize - 1;
                             this->iheight = finddepth(this->root);
                             return true;
+                        } else {
+                            curr->right->parent = curr->parent;
+                            // 1.if curr node is its parent's left node
+                            if (curr == curr->parent->left) {
+                                curr->parent->left = curr->right;
+                                delete curr;
+                                this->isize = this->isize - 1;
+                                this->iheight = finddepth(this->root);
+                                return true;
+                            }
+                            // 2.if curr node is its parent's right node
+                            else {
+                                curr->parent->right = curr->right;
+                                delete curr;
+                                this->isize = this->isize - 1;
+                                this->iheight = finddepth(this->root);
+                                return true;
+                            }
                         }
-                        // 2.if curr node is its parent's right node
-                        else {
-                            curr->parent->right = curr->right;
-                            delete curr;
-                            this->isize = this->isize - 1;
-                            this->iheight = finddepth(this->root);
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+                    }  // else: curr的右边有孩子，左边没有孩子的所有情况
+                }  // case3的所有情况
+            }  // else: 当在tree里面找到这个node的所有情况：包括case1,2,3.
+        }  // while 的括号，直到找不到这个node, reach the end of tree,
+           // 就会return false
         // not found the node with item that need to be deleted
         return false;
-    }
+    }  //整个function最好的括号
 
     /** TODO
      * return the size of BST
@@ -298,8 +360,8 @@ class BST {
 
     /** TODO */
     iterator begin() const {
-        // call first(), and create an object pointing to the smallest element
-        // in BST
+        // call first(), and create an object pointing to the smallest
+        // element in BST
         iterator start(first(this->root));
         return start;
     }
@@ -308,7 +370,8 @@ class BST {
     iterator end() const { return typename BST<Data>::iterator(0); }
 
     /** TODO
-     * return a vector that contains all the data in BST in ascending ordering.
+     * return a vector that contains all the data in BST in ascending
+     * ordering.
      */
     vector<Data> inorder() const {
         vector<Data> vtr;
@@ -343,14 +406,14 @@ class BST {
         for (int i = 0; i <= iheight; i++) {
             for (int j = 0; j < nodesPerLevel; j++) {
                 BSTNode<Data>* curr =
-                    toVisit.front();  // returns a reference to the next element
-                                      // in the queue; The next element is the
-                                      // oldest element in the queue
-                                      // and the same element that is poped out
-                                      // from the queue
-                                      // when pop is called.
-                toVisit.pop();        // removes the next element in the queue,
-                                      // reducing its size by 1
+                    toVisit.front();  // returns a reference to the next
+                                      // element in the queue; The next
+                                      // element is the oldest element
+                                      // in the queue and the same
+                                      // element that is poped out from
+                                      // the queue when pop is called.
+                toVisit.pop();        // removes the next element in the
+                                      // queue, reducing its size by 1
                 if (curr == nullptr) {
                     *out << "X";
                     // If we have an entire missing subtree, we
@@ -375,7 +438,8 @@ class BST {
   private:
     /** TODO Helper function for begin()
      * Parameter: a BSTNode<Data> type pointer
-     * returns a pointer to the node with the samllest data(the left-most node)
+     * returns a pointer to the node with the samllest data(the
+     * left-most node)
      */
     static BSTNode<Data>* first(BSTNode<Data>* root) {
         if (root == 0) return NULL;
@@ -387,7 +451,8 @@ class BST {
 
     /** TODO
      * Parameter: a BSTNode<Data> type pointer
-     * Being called in the destructor, to recursively delete all the nodes.
+     * Being called in the destructor, to recursively delete all the
+     * nodes.
      */
     static void deleteAll(BSTNode<Data>* n) {
         /* Pseudocode:
@@ -425,9 +490,9 @@ class BST {
 
     // Add more helper functions below
     /**private helper method to help inorder()
-     * Parameter: a BSTNode<Data> type poiner, a vector reference variable
-     *Being called in inorder(), recursively pushed all the data in BST to
-     *the vector.
+     * Parameter: a BSTNode<Data> type poiner, a vector reference
+     *variable Being called in inorder(), recursively pushed all the
+     *data in BST to the vector.
      */
     static void inorderpush(BSTNode<Data>* root1, vector<Data>& storevtr) {
         if ((root1 != 0) && (root1->left != 0)) {
