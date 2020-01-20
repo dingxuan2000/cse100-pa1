@@ -47,12 +47,7 @@ class BST {
     /** TODO */
     BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {
         vector<Data> vtr = bst.inorder();
-        // int start = 0;
-        // int end = bst.size() - 1;
         this->root = buildSubtree(vtr, 0, bst.size() - 1, this->iheight);
-        // this->iheight = finddepth(this->root, -1);
-        // this->isize = bst.isize;
-        // iheight = GetBalancedDepth(bst.size());
     }
 
     /** TODO */

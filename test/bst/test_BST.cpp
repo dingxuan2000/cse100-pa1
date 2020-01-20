@@ -154,3 +154,22 @@ TEST(BSTFixture, CHECK_DELETENODE) {
     ASSERT_TRUE(bstr.deleteNode(12));
     // ASSERT_EQ(*(->right), 18);
 }
+
+TEST(BSTFixture, CHECK_BALANCING) {
+    BST<int> bstr = BST<int>();
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(12);
+    bstr.insert(4);
+    bstr.insert(6);
+    bstr.insert(18);
+    bstr.insert(17);
+    bstr.insert(20);
+    BST<int> copy = BST<int>(bstr);
+    BST<int>::iterator it = copy.begin();
+    vector<int> vtr{4, 5, 6, 7, 12, 17, 18, 20};
+    for (int i = 0; i < bstr.size(); i++) {
+        ASSERT_EQ(*it, vtr[i]);
+        it++;
+    }
+}
