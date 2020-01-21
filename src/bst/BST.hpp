@@ -44,7 +44,10 @@ class BST {
      */
     BST() : root(0), isize(0), iheight(-1) {}
 
-    /** TODO */
+    /** TODO
+     * Created a copy constructor, and calling buildSubtree to get a balanced
+     * tree
+     */
     BST(const BST<Data>& bst) : root(0), isize(0), iheight(-1) {
         vector<Data> vtr = bst.inorder();
         this->isize = bst.isize;
@@ -155,7 +158,14 @@ class BST {
         return iobj;
     }
 
-    /** TODO */  // PART 2
+    /** TODO
+     * To delete the node in BST
+     * In general, there are three cases:
+     *  1. when the node is a leaf node.
+     * 2. when the node has only one child
+     * 3. when the node has two children
+     */
+    // PART 2
     bool deleteNode(const Data& item) {
         BSTNode<Data>* curr = this->root;
         while (curr != NULL) {
@@ -281,15 +291,15 @@ class BST {
                 }
                 // case3: node has exactly one child
                 else {
-                    //首先, curr的左边有孩子，右边没有孩子，考虑以下情况：
-                    // 1. 如果curr是root, 那么将curr->left设为新的root,
-                    // 并将这个新root的parent设为NULL.然后 delete curr node,
-                    // 并更新size, height, return true.
-                    // 2. curr是它parent的左孩子，那么可以指定curr->parent->left
-                    // = curr->left.
-                    // 3.
-                    // 如果curr是它parent的右孩子，那么可以指定curr->parent->right
-                    // = curr->left.
+                    // First, the condition of the current node has right child,
+                    // but not left child.
+                    // 1. If curr is root, then curr->left is the new root,
+                    // then set this new root's parent as NULL. Then, delete
+                    // curr node, update size, height, return true.
+                    // 2. curr is its parent's left child，then set
+                    // curr->parent->left = curr->left. 3. If curr is its
+                    // parent's right child，then set curr->parent->right =
+                    // curr->left.
                     if (curr->left != NULL) {
                         /**         7
                          *         /
@@ -341,15 +351,16 @@ class BST {
                             }
                         }
                     }
-                    // 接下来是，curr的右边有孩子，左边没有孩子，考虑以下情况：
-                    // 1. 如果curr就是root的话，那么将curr->right设为新的root,
-                    // 然后将这个新的root->parent
-                    //为NULL.然后delete curr node, update size, height, return
+                    // The next is, the condition of current node has right
+                    // child, but not left child.
+                    // 1. If curr is root, then set curr->right as root,
+                    // then set root->parent as NULL.
+                    // Then delete curr node, update size, height, return
                     // true.
-                    // 2.如果curr是它parent的left
-                    // child，那么将curr->parent->left = curr->right.
-                    // 3. 如果curr是它parent的right child,
-                    // 那么将curr->parent->right = curr->right.
+                    // 2.If curr is its parent's left
+                    // child，then set curr->parent->left = curr->right.
+                    // 3. If curr is its parent's right child,
+                    // then set curr->parent->right = curr->right.
                     // when curr node's only one child is on the right
                     else {
                         if (curr->parent == NULL) {
@@ -378,14 +389,16 @@ class BST {
                                 return true;
                             }
                         }
-                    }  // else: curr的右边有孩子，左边没有孩子的所有情况
-                }  // case3的所有情况
-            }  // else: 当在tree里面找到这个node的所有情况：包括case1,2,3.
-        }  // while 的括号，直到找不到这个node, reach the end of tree,
-           // 就会return false
+                    }  // else: the condition of curr has right child, but not
+                       // left child.
+                }      // All the conditions in case3
+            }  // else: when found the node in the tree, concludes case1,2,3.
+        }  // while: when not found the node in the tree, which reaches the end
+           // of tree,
+        // return false
         // not found the node with item that need to be deleted
         return false;
-    }  //整个function最好的括号
+    }  // The whole deleteNode() function
 
     /** TODO
      * return the size of BST
@@ -518,11 +531,12 @@ class BST {
         delete n;
     }
 
-    /** TODO */
+    /** TODO
+     * using this function to let the old BST object to create an balanced BST
+     */
     BSTNode<Data>* buildSubtree(vector<Data>& data, int start, int end,
                                 int depth) {
         // Example: 7, 9 ,10, 11, 20, 30
-
         if (start > end) return 0;
         int median = (start + end + 1) / 2;
         BSTNode<Data>* rootptr = new BSTNode<Data>(data[median]);
@@ -530,10 +544,13 @@ class BST {
         if (this->iheight < depth) this->iheight = depth;
         // left subtree
         rootptr->left = buildSubtree(data, start, median - 1, depth);
+        /** when the ptr is not null, we can connect it with its parent node.
+         * Otherwise, we shouldn't connect it with its parent node because
+         * it will cause segment fault if we connect nullptr with nullptr's
+         * parent.
+         */
         if (rootptr->left != NULL) (rootptr->left)->parent = rootptr;
-
-        // right subtree, the range of (median+1 to end) has problem.
-
+        // right subtree
         rootptr->right = buildSubtree(data, median + 1, end, depth);
         if (rootptr->right != NULL) (rootptr->right)->parent = rootptr;
         return rootptr;
