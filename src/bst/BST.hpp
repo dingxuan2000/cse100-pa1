@@ -166,23 +166,29 @@ class BST {
             else {
                 // case1: if curr is a leaf node
                 if ((curr->left == NULL) && (curr->right == NULL)) {
-                    if (curr->parent == NULL) {
+                    // when the tree has only root node, set root to null, and
+                    // delete it.
+                    if (curr == this->root) {
                         curr = NULL;
-                        delete curr;
-                    }
-                    // we have to set NULL pointer after deleting
-                    if (curr == curr->parent->left) {
-                        curr->parent->left = NULL;
                         delete curr;
                         this->isize = this->isize - 1;
                         this->iheight = finddepth(this->root);
                         return true;
                     } else {
-                        curr->parent->right = NULL;
-                        delete curr;
-                        this->isize = this->isize - 1;
-                        this->iheight = finddepth(this->root);
-                        return true;
+                        // we have to set NULL pointer after deleting
+                        if (curr == curr->parent->left) {
+                            curr->parent->left = NULL;
+                            delete curr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        } else {
+                            curr->parent->right = NULL;
+                            delete curr;
+                            this->isize = this->isize - 1;
+                            this->iheight = finddepth(this->root);
+                            return true;
+                        }
                     }
 
                 }
@@ -195,7 +201,11 @@ class BST {
                     // data.
                     if (successorPtr->right == NULL) {
                         curr->setData(successorPtr->getData());
-                        // depends on the successorPtr is on the left or right
+                        // When the successorPtr = successorPtr->parent->right
+                        /**        7
+                         *        / \
+                         *       5  20
+                         */
                         if (successorPtr == successorPtr->parent->right) {
                             // Set the successorPtr as NULL, and delete it
                             successorPtr->parent->right = NULL;
@@ -204,7 +214,15 @@ class BST {
                             this->iheight = finddepth(this->root);
                             return true;
 
-                        } else {
+                        }
+                        /**When successorPtr = successorPtr->parent->left
+                         *                7
+                         *               / \
+                         *              5   20
+                         *                  /
+                         *                 15
+                         */
+                        else {
                             // When the successorPtr is on the left, set as
                             // NULL, and delete it.
                             successorPtr->parent->left = NULL;
@@ -219,6 +237,18 @@ class BST {
                     // connect successorPtr's right subtree with its parent. In
                     // this case, the successorPtr can't have the left subtree.
                     else {
+                        /**           7
+                         *           / \
+                         *          5   10
+                         *              /
+                         *             8
+                         *              \
+                         *               9
+                         * In the above example, to delete 7, 8 is 7's
+                         * successor. And 8 has its right child. We need to
+                         * replace data with curr and its successor, then
+                         * connect 9 to successor's parent!!!
+                         */
                         if (successorPtr == successorPtr->parent->left) {
                             curr->setData(successorPtr->getData());
                             successorPtr->right->parent = successorPtr->parent;
@@ -227,7 +257,16 @@ class BST {
                             this->isize = this->isize - 1;
                             this->iheight = finddepth(this->root);
                             return true;
-                        } else {
+                        }
+                        /**              7
+                         *              / \
+                         *             5  20
+                         *                  \
+                         *                   25
+                         *                   / \
+                         *                  21  30
+                         */
+                        else {
                             curr->setData(successorPtr->getData());
                             // connect successorPtr's child with its partent
                             successorPtr->right->parent = curr;
@@ -242,16 +281,6 @@ class BST {
                 }
                 // case3: node has exactly one child
                 else {
-                    // //First, check if the curr that need to be deleted is
-                    // root!!! if (curr->parent == NULL) {
-                    //     //Then, if the
-                    //     this->root = curr->left;
-                    //     this->root->parent = NULL;
-                    //     delete curr;
-                    //     this->isize = this->isize - 1;
-                    //     this->iheight = finddepth(this->root);
-                    //     return true;
-                    // }
                     //首先, curr的左边有孩子，右边没有孩子，考虑以下情况：
                     // 1. 如果curr是root, 那么将curr->left设为新的root,
                     // 并将这个新root的parent设为NULL.然后 delete curr node,
@@ -262,6 +291,12 @@ class BST {
                     // 如果curr是它parent的右孩子，那么可以指定curr->parent->right
                     // = curr->left.
                     if (curr->left != NULL) {
+                        /**         7
+                         *         /
+                         *        3
+                         *       / \
+                         *      2   5
+                         */
                         if (curr->parent == NULL) {
                             this->root = curr->left;
                             this->root->parent = NULL;
@@ -271,7 +306,15 @@ class BST {
                             return true;
                         } else {
                             curr->left->parent = curr->parent;
-                            // 1.if curr node is its parent's left node
+                            /** 1.if curr node is its parent's left node
+                             *            10
+                             *            /
+                             *           5
+                             *          /
+                             *         3
+                             *        / \
+                             *       1   4
+                             */
                             if (curr == curr->parent->left) {
                                 curr->parent->left = curr->left;
                                 delete curr;
@@ -280,7 +323,15 @@ class BST {
                                 return true;
                             }
 
-                            // 2.if curr node is its parent's right node
+                            /** 2.if curr node is its parent's right node
+                             *             5
+                             *              \
+                             *               15
+                             *               /
+                             *              10
+                             *              / \
+                             *             9   12
+                             */
                             else {
                                 curr->parent->right = curr->left;
                                 delete curr;

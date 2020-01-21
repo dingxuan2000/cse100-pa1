@@ -140,7 +140,7 @@ TEST_F(TestBSTFixture, CHECK_BEGIN) { ASSERT_EQ(*(bst.begin()), 5); }
 TEST_F(TestBSTFixture, CHECK_END) { ASSERT_EQ(bst.end(), nullptr); }
 
 TEST_F(TestBSTFixture, CHECK_PRINT) { bst.print(&cout); }
-TEST(BSTFixture, CHECK_DELETENODE) {
+TEST(BSTTests, DELETENODE_RIGHT_LINKEDLIST) {
     BST<int> bstr;
     bstr.insert(2);
     bstr.insert(3);
@@ -148,14 +148,146 @@ TEST(BSTFixture, CHECK_DELETENODE) {
     bstr.insert(12);
     bstr.insert(18);
     bstr.insert(50);
-    // bstr.insert(17);
-    // bstr.insert(20);
-    vector<int> vtr = bstr.inorder();
-    ASSERT_TRUE(bstr.deleteNode(2));
-    // ASSERT_EQ(*(->right), 18);
+    // vector<int> vtr = bstr.inorder();
+    EXPECT_TRUE(bstr.deleteNode(2));
+    ASSERT_EQ(bstr.size(), 5);
+}
+TEST(BSTTests, DELETENODE_LEFT_LINKEDLIST) {
+    BST<int> bstr;
+    bstr.insert(50);
+    bstr.insert(18);
+    bstr.insert(12);
+    bstr.insert(6);
+    bstr.insert(3);
+    bstr.insert(2);
+    // vector<int> vtr = bstr.inorder();
+    EXPECT_TRUE(bstr.deleteNode(50));
+    ASSERT_EQ(bstr.size(), 5);
 }
 
-TEST(BSTFixture, CHECK_BALANCING) {
+TEST(BSTTests, DELETENODE_LEAFNODE_ROOT) {
+    BST<int> bstr;
+    bstr.insert(2);
+    ASSERT_TRUE(bstr.deleteNode(2));
+}
+TEST(BSTTests, DELETENODE_RIGHT_LEAFNODE) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(10);
+    bstr.insert(20);
+    EXPECT_TRUE(bstr.deleteNode(20));
+    ASSERT_EQ(bstr.size(), 3);
+}
+TEST(BSTTests, DELETENODE_LEFT_LEAFNODE) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(10);
+    bstr.insert(8);
+    EXPECT_TRUE(bstr.deleteNode(8));
+    ASSERT_EQ(bstr.size(), 3);
+}
+TEST(BSTTests, DELETENODE_NODE_TWOCHILD_CASE1) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(20);
+    EXPECT_TRUE(bstr.deleteNode(7));
+    ASSERT_EQ(bstr.size(), 2);
+}
+TEST(BSTTests, DELETENODE_NODE_TWOCHILD_CASE2) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(20);
+    bstr.insert(15);
+    EXPECT_TRUE(bstr.deleteNode(15));
+    ASSERT_EQ(bstr.size(), 3);
+}
+TEST(BSTTests, DELETENODE_NODE_TWOCHILD_CASE3) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(10);
+    bstr.insert(8);
+    bstr.insert(9);
+    EXPECT_TRUE(bstr.deleteNode(7));
+    ASSERT_EQ(bstr.size(), 4);
+}
+TEST(BSTTests, DELETENODE_NODE_TWOCHILD_CASE4) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(5);
+    bstr.insert(20);
+    bstr.insert(25);
+    bstr.insert(21);
+    bstr.insert(30);
+    EXPECT_TRUE(bstr.deleteNode(7));
+    ASSERT_EQ(bstr.size(), 5);
+}
+TEST(BSTTests, DELETENODE_NODE_SINGLECHILD_CASE1) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(3);
+    bstr.insert(2);
+    bstr.insert(5);
+    EXPECT_TRUE(bstr.deleteNode(7));
+    ASSERT_EQ(bstr.size(), 3);
+}
+TEST(BSTTests, DELETENODE_NODE_SINGLECHILD_CASE2) {
+    BST<int> bstr;
+    bstr.insert(7);
+    bstr.insert(10);
+    bstr.insert(8);
+    bstr.insert(15);
+    EXPECT_TRUE(bstr.deleteNode(7));
+    ASSERT_EQ(bstr.size(), 3);
+}
+TEST(BSTTests, DELETENODE_NODE_SINGLECHILD_CASE3) {
+    BST<int> bstr;
+    bstr.insert(10);
+    bstr.insert(5);
+    bstr.insert(3);
+    bstr.insert(1);
+    bstr.insert(4);
+    EXPECT_TRUE(bstr.deleteNode(5));
+    ASSERT_EQ(bstr.size(), 4);
+}
+TEST(BSTTests, DELETENODE_NODE_SINGLECHILD_CASE4) {
+    BST<int> bstr;
+    bstr.insert(5);
+    bstr.insert(15);
+    bstr.insert(10);
+    bstr.insert(9);
+    bstr.insert(12);
+    EXPECT_TRUE(bstr.deleteNode(15));
+    ASSERT_EQ(bstr.size(), 4);
+}
+TEST(BSTTests, DELETENODE_NODE_SINGLECHILD_CASE5) {
+    BST<int> bstr;
+    bstr.insert(20);
+    bstr.insert(10);
+    bstr.insert(25);
+    bstr.insert(15);
+    bstr.insert(13);
+    bstr.insert(17);
+    EXPECT_TRUE(bstr.deleteNode(10));
+    ASSERT_EQ(bstr.size(), 5);
+}
+TEST(BSTTests, DELETENODE_NODE_SINGLECHILD_CASE6) {
+    BST<int> bstr;
+    bstr.insert(10);
+    bstr.insert(5);
+    bstr.insert(20);
+    bstr.insert(30);
+    bstr.insert(25);
+    bstr.insert(35);
+    EXPECT_TRUE(bstr.deleteNode(20));
+    ASSERT_EQ(bstr.size(), 5);
+}
+
+TEST(BSTTests, CHECK_BALANCING) {
     BST<int> bstr = BST<int>();
     bstr.insert(7);
     bstr.insert(5);
